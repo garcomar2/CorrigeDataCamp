@@ -26,6 +26,19 @@ puntuaciones
 ```
 ## - Usa una expresión regular para buscar todos los ficheros con el justificante del curso. 
 
+```{r}
+data <- "2025-26 Tractament de les dades Gr.A-T (36423)-Tarea Intermediate R(Datacamp)-3281647"
+entregas <- list.files(data)
+justificantes <- c()
+
+for (carpeta in entregas) {
+  archivos_carpeta <- list.files(file.path(data, carpeta))
+  justificantes_carpeta <- archivos_carpeta[archivos_carpeta == "certificate.pdf"]
+  justificantes <- c(justificantes, justificantes_carpeta)
+}
+
+justificantes
+```
 
 
 
