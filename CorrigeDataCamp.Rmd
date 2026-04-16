@@ -9,5 +9,23 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## - Usa una expresión regular para buscar todos los ficheros de puntuaciones en la carpeta descomprimida (usa list.files)
+
+```{r}
+data <- "2025-26 Tractament de les dades Gr.A-T (36423)-Tarea Intermediate R(Datacamp)-3281647"
+entregas <- list.files(data)
+puntuaciones <- c()
+
+for (carpeta in entregas) {
+  archivos_carpeta <- list.files(file.path(data, carpeta))
+  puntos_carpeta <- archivos_carpeta[archivos_carpeta == "puntos.txt"]
+  puntuaciones <- c(puntuaciones,puntos_carpeta)
+}
+
+puntuaciones
+```
+## - Usa una expresión regular para buscar todos los ficheros con el justificante del curso. 
+
+
 
 
