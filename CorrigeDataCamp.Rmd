@@ -18,8 +18,8 @@ puntuaciones <- c()
 
 for (carpeta in entregas) {
   archivos_carpeta <- list.files(file.path(data, carpeta))
-  puntos_carpeta <- archivos_carpeta[archivos_carpeta == "puntos.txt"]
-  puntuaciones <- c(puntuaciones,puntos_carpeta)
+  puntos_carpeta <- archivos_carpeta[grepl("txt$", archivos_carpeta)]
+  puntuaciones <- c(puntuaciones,file.path(data, carpeta, puntos_carpeta))
 }
 
 puntuaciones
@@ -33,12 +33,46 @@ justificantes <- c()
 
 for (carpeta in entregas) {
   archivos_carpeta <- list.files(file.path(data, carpeta))
-  justificantes_carpeta <- archivos_carpeta[archivos_carpeta == "certificate.pdf"]
-  justificantes <- c(justificantes, justificantes_carpeta)
+  justificantes_carpeta <- archivos_carpeta[grepl("pdf$", archivos_carpeta)]
+  justificantes <- c(justificantes, file.path(data, carpeta, justificantes_carpeta))
 }
 
 justificantes
 ```
 
+## 
 
+```{r}
+apellidos <- c()
+
+for (entrega in entregas) {
+  parte1 <- strsplit(entrega, "_")[[1]][1]
+  apellido <- strsplit(parte1, ",")[[1]][1]
+  apellidos <- c(apellidos, apellido)
+}
+
+apellidos
+
+```
+
+```{r}
+
+puntos <- c()
+
+for (fichero in puntuaciones) {
+  contenido <- readLines(fichero)
+  puntos <- c(puntos, contenido[1])
+}
+
+puntos
+
+#¿todas las entregas usaron como nombre del fichero de puntos el indicado; puntos.txt ?¿cuántas variantes hay ?. ¿Todas las entregas contienen el fichero de puntos y el justificante de realización del curso ?
+# No todas las entregas usaron como nombre del fichero de puntos "puntos.txt", hay algunos que tienen "puntos (2).txt", "puntoss.txt", "6950.txt", etc. Y lo mismo pasa con el certificado como "certificate (3).pdf".
+if (length(puntuaciones) == length(entregas) && length(justificantes) == length(entregas)) {
+  print("Todas las entregas contienen el fichero de puntos y el justificante.")
+} else {
+  print("No todas las entregas contienen el fichero de puntos y el justificante.")
+}
+
+```
 
