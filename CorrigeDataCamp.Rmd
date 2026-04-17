@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(writexl)
+library(openxlsx)
 library(dplyr)
 ```
 
@@ -95,6 +96,11 @@ write_xlsx(evalua_df, path = "NotasRIntermedio.xlsx")
 
 ```{r}
 fich <- "AlumnosTD25_26.xlsx"
+alumnos_df <- read.xlsx(fich)
 
+AlumnosNotas <- left_join(alumnos_df, evalua_df, by = c("Apellido(s)" = "apellidos"))
+
+write_xlsx(AlumnosNotas, path = "AlumnosNotas.xlsx")
 ```
+
 
