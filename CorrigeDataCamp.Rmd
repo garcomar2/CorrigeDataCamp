@@ -11,18 +11,42 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## - Usa una expresión regular para buscar todos los ficheros de puntuaciones en la carpeta descomprimida (usa list.files)
 
+
 ```{r}
 data <- "2025-26 Tractament de les dades Gr.A-T (36423)-Tarea Intermediate R(Datacamp)-3281647"
 entregas <- list.files(data)
-puntuaciones <- c()
+
+apellidos <- c()
+puntos <- c()
+NomFile <- c()
+Puntos <- c()
 
 for (carpeta in entregas) {
-  archivos_carpeta <- list.files(file.path(data, carpeta))
-  puntos_carpeta <- archivos_carpeta[grepl("txt$", archivos_carpeta)]
-  puntuaciones <- c(puntuaciones,file.path(data, carpeta, puntos_carpeta))
+  ruta_carpeta <- file.path(data, carpeta)
+  archivos_carpeta <- list.files(ruta_carpeta)
+  
+  txt_carpeta <- archivos_carpeta[grepl("\\.txt$", archivos_carpeta, ignore.case = TRUE)]
+  
+  parte1 <- strsplit(carpeta, "_")[[1]][1]
+  apellido <- strsplit(parte1, ",")[[1]][1]
+  
+  apellidos <- c(apellidos, apellido)
+  
+   if (length(txt_carpeta) > 0) {
+    ruta_txt <- file.path(ruta_carpeta, txt_carpeta[1])
+    contenido <- readLines(ruta_txt)
+    
+    puntos <- c(puntos, as.numeric(contenido[1]))
+    NomFile <- c(NomFile, txt_carpeta[1])
+    Puntos <- c(Puntos, contenido[1])
+  } else {
+    puntos <- c(puntos, NA)
+    NomFile <- c(NomFile, NA)
+    Puntos <- c(Puntos, NA)
+  }
 }
 
-puntuaciones
+
 ```
 ## - Usa una expresión regular para buscar todos los ficheros con el justificante del curso. 
 
@@ -37,42 +61,19 @@ for (carpeta in entregas) {
   justificantes <- c(justificantes, file.path(data, carpeta, justificantes_carpeta))
 }
 
-justificantes
+
 ```
 
-## 
+ ¿todas las entregas usaron como nombre del fichero de puntos el indicado; puntos.txt ?¿cuántas variantes hay ?. ¿Todas las entregas contienen el fichero de puntos y el justificante de realización del curso ?
+
+# No todas las entregas usaron como nombre del fichero de puntos "puntos.txt", hay algunos que tienen "puntos (2).txt", "puntoss.txt", "6950.txt", etc. Y lo mismo pasa con el certificado como "certificate (3).pdf". Y hay algunas entregas que contienen solo el fichero de puntos o solo el justificante, incluso hay entregas con más de un justificante.
 
 ```{r}
-apellidos <- c()
-
-for (entrega in entregas) {
-  parte1 <- strsplit(entrega, "_")[[1]][1]
-  apellido <- strsplit(parte1, ",")[[1]][1]
-  apellidos <- c(apellidos, apellido)
-}
-
-apellidos
-
+length(puntuaciones)
+length(entregas)
+length(justificantes)
 ```
 
-```{r}
 
-puntos <- c()
 
-for (fichero in puntuaciones) {
-  contenido <- readLines(fichero)
-  puntos <- c(puntos, contenido[1])
-}
-
-puntos
-
-#¿todas las entregas usaron como nombre del fichero de puntos el indicado; puntos.txt ?¿cuántas variantes hay ?. ¿Todas las entregas contienen el fichero de puntos y el justificante de realización del curso ?
-# No todas las entregas usaron como nombre del fichero de puntos "puntos.txt", hay algunos que tienen "puntos (2).txt", "puntoss.txt", "6950.txt", etc. Y lo mismo pasa con el certificado como "certificate (3).pdf".
-if (length(puntuaciones) == length(entregas) && length(justificantes) == length(entregas)) {
-  print("Todas las entregas contienen el fichero de puntos y el justificante.")
-} else {
-  print("No todas las entregas contienen el fichero de puntos y el justificante.")
-}
-
-```
 
