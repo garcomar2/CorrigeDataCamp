@@ -8,6 +8,13 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# Librerias
+
+```{r}
+library(writexl)
+library(dplyr)
+```
+
 
 ## - Usa una expresión regular para buscar todos los ficheros de puntuaciones en la carpeta descomprimida (usa list.files)
 
@@ -74,6 +81,20 @@ length(entregas)
 length(justificantes)
 ```
 
+## Dataframe
+
+```{r}
+evalua_df <- data.frame(apellidos, puntos, NomFile, Puntos)
+
+write_xlsx(evalua_df, path = "NotasRIntermedio.xlsx")
+```
 
 
+## - Carga la información de los alumnos matriculados, incluidos en el fichero AlumnosTDXX_XX.xlsx en un data frame y combina la información con el data frame anterior (debes incluir algún identificador único, correo electróncio, ID) para asociar a cada usuario toda la información obtenida del análisis de las entregas. Guarda la información del data frame resultado de la combinación en AlumnosNotas.xlsx. Este fichero contiene a todos los alumnos matriculados y para los que realizaron la entrega de la tarea aparecerán las columnas  adicionales incluidas en el data frame evalua_df
+
+
+```{r}
+fich <- "AlumnosTD25_26.xlsx"
+
+```
 
